@@ -7,19 +7,22 @@ import shutil
 import uvicorn
 import uuid
 import datetime
+from dotenv import load_dotenv
 
 app = FastAPI()
+
+load_dotenv()
 
 os.makedirs("./static", exist_ok=True)
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
-@app.get("/")
+@app.get("/") # https://facebook.com/
 async def read_root():
     return JSONResponse(content={
         "message": "Hello, World!"
     })
 
-@app.post("/upload-file/")
+@app.post("/upload-file/") # https://facebook.com/upload-file/
 async def upload_file(file: UploadFile = File(...)):
     try:
         # path yyyy/mm/dd/uuid.ext
@@ -39,4 +42,4 @@ async def upload_file(file: UploadFile = File(...)):
         return JSONResponse(status_code=500, content={"message": str(e)})
 
 if __name__ == "__main__":
-    uvicorn.run("run:app", host="0.0.0.0", port=8080, reload=True)
+    uvicorn.run("run:app", host="0.0.0.0", port=int(os.getenv("INTERNAL_PORT", "80")), reload=True)
