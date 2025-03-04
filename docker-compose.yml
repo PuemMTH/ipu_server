@@ -9,8 +9,8 @@ services:
       - ipuserver_internal
     working_dir: /app
     command: python run.py
-    ports: # external:internal
-      - "8000:80"
+    # ports: # external:internal
+    #   - "8000:80"
     volumes:
       - ./static:/app/static
       - ./.env:/app/.env
